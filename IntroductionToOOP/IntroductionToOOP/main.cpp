@@ -1,6 +1,8 @@
 #include<iostream>
 using namespace std;
 
+#define delimiter "\n------------------------------\n"
+
 //Объектно-Ориентированное Программирование на языке C++
 //Object-Oriented Programming
 
@@ -55,6 +57,15 @@ public:
 		cout << "Destructor:\t\t" << this << endl;
 	}
 
+	//				Operators:
+	Point& operator=(const Point& other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		cout << "CopyAssignment:\t\t" << this << endl;
+		return *this;
+	}
+
 	//				Methods:
 	void print()const
 	{
@@ -63,10 +74,13 @@ public:
 };
 
 //#define STRUCT_POINT
+//#define CONSTRUCTORS_CHECK
+//#define ASSIGNMENT_CHECK
 
 void main()
 {
 	setlocale(LC_ALL, "");
+
 #ifdef STRUCT_POINT
 	//type name;
 	int a;		//Объявление переменной 'a' типа 'int'
@@ -81,9 +95,10 @@ void main()
 	cout << pA->x << "\t" << pA->y << endl;
 #endif // STRUCT_POINT
 
+#ifdef CONSTRUCTORS_CHECK
 	Point A;		//Default constructor
-	/*A.set_x(2);
-	A.set_y(3);*/
+/*A.set_x(2);
+A.set_y(3);*/
 	cout << A.get_x() << "\t" << A.get_y() << endl;
 	A.print();
 
@@ -95,6 +110,33 @@ void main()
 
 	Point D = C;	//Copy constructor
 	D.print();
+
+	Point E;
+	E = D;
+	E.print();
+#endif // CONSTRUCTORS_CHECK
+
+#ifdef ASSIGNMENT_CHECK
+	int a, b, c;
+
+	a = b = c = 0;
+	cout << a << "\t" << b << "\t" << c << endl;
+
+	Point A, B, C;
+	cout << delimiter << endl;
+	A = B = C = Point(2, 3);
+	cout << delimiter << endl;
+	cout << sizeof(A) << endl;
+#endif // ASSIGNMENT_CHECK
+
+	int a = 2;
+	int b = 3;
+	int c = a + b;
+	cout << c << endl;
+
+	Point A(2, 3);
+	Point B(4, 5);
+	Point C = A + B;
 }
 
 /*
@@ -125,5 +167,34 @@ Constructor;
 	-конструктор переноса;
 ~Destructor;
 Assignment operator;
+-------------------------------------
+*/
+
+/*
+-------------------------------------
+	type operator@(parameters)
+	{
+		.........;
+		//group-of-statements;
+		.........;
+	}
+
+1. Перегрузить можно только существующие операторы:
+	+  перегружается;
+	++ перегружается;
+	%  перегружается;
+	%% НЕ перегружается;
+
+2. НЕ все существующие операторы можно перегрузить.
+   НЕ перегружаются:
+	?: - Тернарный оператор (Conditional ternary operator);
+	:: - Оператор разрешения видимости (Scope operator);
+	.  - Оператор пямого доступа (Point operator);
+	.* - Pointer to member selection;
+	#  - Preprocessor directive;
+	## - Preprecessor concatenation; "Hello" + "World" = "HelloWorld"
+
+3. Перегруженные операторы сохраняют приоритет;
+4. Переопределить поведение оператор над встроенными типами НЕВОЗМОЖНО;
 -------------------------------------
 */
